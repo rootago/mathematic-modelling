@@ -1,0 +1,23 @@
+clear;clc
+% 变量边界
+lb = [0, 0, 70, 0];
+ub = [12, 12, 140, pi];
+nvars = 4;
+% 设置选项
+options = optimoptions('particleswarm', ...
+    'Display','iter', ...
+    'PlotFcn', @pswplotbestf, ...
+    'SwarmSize', 200, ...
+    'MaxIterations', 100, ...
+    'MaxStallIterations', 200, ...
+    'FunctionTolerance', 1e-12, ...
+    'UseParallel', true);
+% 调用粒子群算法
+[x,fval] = particleswarm(@fun, nvars, lb, ub, options);
+% 输出结果
+disp('最优解：');
+disp(x);
+disp('最优目标值：');
+disp(- fval);
+% 时间区间
+result = -fun(x)

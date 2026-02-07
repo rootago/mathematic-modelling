@@ -1,0 +1,12 @@
+{
+  "method": "Differential Evolution (scipy)",
+  "E0": 3.6,
+  "k": 1e-06,
+  "A": 0.3621450153661392,
+  "B": 0.44169453380375173,
+  "Q0": 2.0,
+  "residual_sum_squares": 104.23617788854754,
+  "nfev": 11438,
+  "nit": 126,
+  "success": true
+}

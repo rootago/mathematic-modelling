@@ -1,0 +1,9 @@
+{
+  "method": "Fixed (Li-Po standard, no fitting)",
+  "E0": 3.85,
+  "k": 0.02,
+  "A": 0.25,
+  "B": 3.0,
+  "Q0": 3.0,
+  "r": 0.022
+}

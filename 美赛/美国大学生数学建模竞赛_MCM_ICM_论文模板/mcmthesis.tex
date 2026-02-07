@@ -1,0 +1,644 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 美国大学生数学建模竞赛（MCM/ICM）论文模板
+%%% 来源网站：www.latexstudio.net
+%%% 中文注释：小嗷犬 blog.marquis.eu.org
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% code: 代码文件夹
+%%% figures: 图片文件夹
+%%% *.cls: LaTeX 格式文件
+%%% *.tex: LaTeX 文档文件
+%%% *.bib: Bib 引用文献源文件
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 可能用到的网站
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LaTeX公式编辑器：https://www.latexlive.com/
+%%% Diagram流程图绘制：https://www.drawio.com/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 模板参数设置
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{mcmthesis}  % 文档类型
+\mcmsetup{CTeX = false,   % 使用 CTeX 套装时，设置为 true
+        tcn = 2627238,   % 队伍控制号，编辑页眉
+        problem = A,  % 选题
+        sheet = true,   % sheet页
+        titleinsheet = true,   % sheet页显示标题
+        keywordsinsheet = true,  % sheet页显示关键词
+        titlepage = false,   % 标题页
+        abstract = true  % 摘要
+        }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 导入宏包和引用文献源
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{palatino}  % 帕拉提诺体字体宏包
+\usepackage{lipsum}  % 导入生成段落的宏包
+\usepackage[hyperref=true,style=ieee]{biblatex}  % biblatex参考文献宏包
+\usepackage{placeins}   % 用于 \FloatBarrier
+\usepackage{indentfirst} % 导入宏包
+\usepackage{setspace}
+\usepackage{float}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\setlength{\parindent}{2em} % 设置缩进量为2个字符
+\usepackage[hyperref=true,style=ieee]{biblatex}  % biblatex参考文献宏包
+\addbibresource{ref.bib}  % 添加引用文献bib源
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 文档信息设置
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Puzzling "Short Battery Life": Mechanism behind Smartphone Battery Usage and Aging}  % 文章标题
+\author{\small Team 2627238}  % 作者，开启标题页才会显示
+\date{\today}  % 日期，开启标题页才会显示
+
+\memoto{MCM office}  % 建议书目标
+\memofrom{MCM Team 2627238}  % 建议书来源
+\memosubject{MCM}  % 建议书主题
+\memodate{\today}  % 建议书日期
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 文档开始
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}  % 文档
+
+\begin{spacing}{0.01}
+\begin{abstract}  % 摘要!!!!!!!!!
+
+In the era of mobile computing, smartphone battery endurance has become the primary cause of user anxiety . This paper aims to establish a continuous-time model based on the mechanism of smartphone batteries to predict the \textbf{Time-to-Empty (TTE)}.
+
+For \textbf{Requirement 1}, we formulate differential equations based on \textbf{the Law of Conservation of Charge} to describe the change of the State of Charge (SOC). The model consists of three core components. First, we \textbf{decomposed the total power} into baseline energy consumption, with \textbf{Screen, CPU, Network, and GPS} as independent parts, and formulated the relationship between their operating states and total power consumption. Next, we adopted \textbf{the First-order Thevenin battery model} to describe the polarization characteristics and used \textbf{the Tremblay model} to describe the nonlinear relationship between \textbf{Open Circuit Voltage (OCV) and SOC.} Finally, we introduced \textbf{the Arrhenius law} to quantify the cumulative damage to \textbf{the battery's effective capacity (SOH)} caused by environmental or internal factors such as extreme temperatures and extremely low SOC.
+
+Subsequently, for \textbf{Requirement 2 \& 3}, we employ \textbf{the fourth-fifth-order Runge-Kutta} method to perform \textbf{numerical integration} and apply \textbf{the Levenberg-Marquardt algorithm} for \textbf{nonlinear least squares} to determine the modeling parameters. Then, by simulating different scenarios such as "\textbf{Subway Commute}" and "\textbf{Daily Work}", we predicted the \textbf{TTE distribution} under various activities. Furthermore, comparing the predicted results with the reality, we found that \textbf{$RMSE_{SOC}$ is 1.327($h$) and $R^2$ is 0.988}.
+
+Additionally, by comparing the proportions of various components in different activities, it is evident that screen \textbf{brightness and CPU utilization are the most critical factors} that affect battery endurance. \textbf{GPS and Network} have short durations in various scenarios and actually have \textbf{a minor impact} on the battery depletion rate. In the process of investigating environmental factors and aging mechanisms, we found that \textbf{prolonged use of the CPU causes the greatest damage} to battery health, followed by prolonged use of the screen. Moreover, \textbf{low-temperature environments lead to increased CPU load}, resulting in higher power consumption, while \textbf{high-temperature environments significantly exacerbate battery aging}, leading to a marked attenuation of effective capacity.
+
+For \textbf{Requirement 4}, we recommend that users adjust screen brightness and avoid long high-intensity usage. For operating systems, we recommend monitoring battery temperature in real-time, and minimizing phone operation under extreme temperatures.
+
+\begin{keywords}  % 关键词
+Thevenin Battery Model, Tremblay Battery model, Fourth-fifth-order Runge-
+Kutta, Levenberg-Marquardt Optimization, Factor Analysis for Battery Aging
+\end{keywords}  % 结束关键词
+\end{abstract}  % 结束摘要
+\end{spacing}
+\maketitle  % 生成sheet页
+
+\begin{spacing}{0.01}
+\tableofcontents
+\end{spacing}
+
+%%%%%%%%%%%%%%%%%% sheet页与目录页结束 %%%%%%%%%%%%%%%%%%
+
+\newpage  % 开始新的一页
+\section{Introduction}  % 一级标题
+\subsection{Background and Problem Statement}
+In the contemporary era of intelligent computing, the smartphone has transcended its original role as a mere communication tool, evolving into an indispensable extension of human cognitive and sensory capabilities that permeates every facet of daily life. However, despite rapid advancements in processing efficiency, display technologies, and application functionality, energy storage technology remains a critical bottleneck within the fields of mobile computing and distributed systems.
+
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{figures/Figure 1.pdf}  % 引入图片源
+\caption{Battery Capacity and Influencing Factors} \label{Figure 1}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+This challenge is primarily attributed to the inherent unpredictability of power consumption patterns; for instance, a battery may sustain a full day of operation on one occasion, yet deplete rapidly before noon on another. Regrettably, this variability has become a persistent source of anxiety for mobile users. While often simplistically attributed to 'heavy usage', lithium-ion energy depletion is, in reality, governed by complex, non-linear coupling relationships among diverse factors. These include screen activity, processor load, network throughput, background application states, and ambient temperature, as well as the device's usage history and degree of aging. Consequently, to elucidate these dynamic mechanisms, it is imperative to establish mathematical-physical models rooted in mechanistic analysis, rather than relying solely on statistical empirical observations.
+
+\subsection{Restatement of the Problem}
+Based on the background discussed above, to explore the fundamental mechanisms of smartphone battery energy dissipation, our group investigates the system's battery dynamics and aims to achieve the following objectives:
+\begin{itemize}
+    \item Continuous-Time Model: Establish a system of differential equations representing the State of Charge (SOC) through mechanistic analysis and parameter setting;
+    \item Analysis of power consumption factors: studying their impact on battery systems and the power consumption of various mobile phone functions under different environmental conditions;
+    \item Time-to-empty prediction: utilize the model to calculate battery depletion time under various initial operating conditions.
+    \item Recommendations and guidance: proposing strategies for users and operating systems based on prediction results
+\end{itemize}
+\subsection{Literature Review}
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{figures/Figure 2.pdf}  % 引入图片源
+\caption{Literature Review} \label{Figure 2}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+In academic research regarding smartphone power consumption, electrochemical models typically prioritize molecular-level chemical mechanisms governed by complex Partial Differential Equations (PDEs). However, such complexity imposes a prohibitive computational burden for smartphones operating in edge computing scenarios. 
+
+
+In contrast, the Equivalent Circuit Model (ECM)\cite{randles1947kinetics,he2011evaluation}
+abstracts these dynamics using idealized components—resistors, constant voltage sources, and capacitors—serving as a practical surrogate for intricate chemical descriptions. This approach constructs a relatively simplified circuit topology, facilitating the design of lightweight computational paradigms for adaptive power management strategies.
+
+Traditional electrochemical computational models may become ineffective when addressing dynamic environmental conditions. Based on existing research, total battery capacity is significantly influenced by temperature and the degree of aging. Furthermore, studies indicate that the aging process is accelerated by exposure to extreme temperatures (both high and low) as well as improper user charging and usage habits.
+
+\subsection{Our work}
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=16cm]{new_figures/Our_Work.png}  % 引入图片源
+\caption{Our Work} \label{Figure 3}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+\begin{itemize}
+    \item First, our primary objective is to construct a continuous-time mathematical model of battery power consumption to simulate the temporal evolution of the State of Charge (SOC) during smartphone usage. Specifically, we need to formulate a system of differential equations about the rate of change of SOC with respect to time. In this framework, factors such as screen brightness, CPU load, and network connectivity are quantified as specific parameters within the equations.
+
+    \item Secondly, we aim to utilize the model we establish to predict the Time-to-Empty under different initial SOC levels and usage conditions. To achieve this, we employ the Runge-Kutta (RK45) method to numerically solve the equations and evaluate battery endurance performance.
+
+    \item Furthermore, beyond usage scenarios, the model incorporates the impact of ambient temperature variations, as well as the long-term effects on battery aging. We quantify the influence of these factors on SOC decay through parameter estimation.
+
+    \item Finally, based on the previous prediction results, we identify the primary drivers responsible for rapid SOC depletion under various conditions. This allows us to provide feasible recommendations for smartphone users and propose efficient power management strategies for operating systems.
+\end{itemize}
+\section{Preparation of the Models}
+\subsection{Assumptions}  % 二级标题
+\begin{itemize}
+    \item All parameters are derived from experimental measurements or manufacturer specifications and remain constant throughout the analysis. Data reliability is ensured by verification against official Android documentation. The dataset\cite{monteiro2024android}
+    contains over 200,000 Android smartphone battery records, providing sufficient generalization.
+    \item We assume that individual components, such as the screen and CPU, operate independently. Based on energy conservation, total power is computed via linear superposition, while non-linear interactions are neglected. The model focuses on thermal sensitivity of major components like CPU to emphasize environmental effects.
+
+    \item Higher-order details such as electrolyte concentration and electrode film impedance are omitted to conform to a First-order Thevenin Model. Battery state is characterized by SOC, polarization voltage, and aging factor; higher-order polarization effects are neglected due to marginal impact.
+
+    \item For the Open Circuit Voltage (OCV), we employ the Tremblay empirical formula to describe the relationship between OCV and SOC. This relationship is assumed to be accurate within the operating SOC range [0, 1] and is not significantly modified by environmental variables. As the foundational principle for battery simulation in MATLAB/Simulink, this formula offers recognized reliability and authority, effectively avoiding overly complex electrochemical kinetic studies.
+\end{itemize}
+
+\subsection{Notation} %符号表！！！！
+The key mathematical notation used in this paper is listed in Table \ref{tab:notations}
+\begin{table}[!h] %  
+  \centering
+  \caption{Notations used in this paper}
+  \label{tab:notations}
+  \begin{tabular}{p{0.15\textwidth} p{0.65\textwidth} p{0.20\textwidth}}
+    \toprule
+    \textbf{Symbol} & \textbf{Description} & \textbf{Unit} \\
+    \midrule
+    $S(t)$ & state of charge(SOC) & $\%$ \\
+    $P_{total}(t)$ & total power consumed & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}$ \\
+    $U_m(t)$ & the terminal voltage modified by Thevenin’s theorem & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}\cdot\text{A}^{-1}$ \\
+    $U_p(t)$ & the polarization voltage & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}\cdot\text{A}^{-1}$ \\
+    $V_{ocv}(t)$ & the open-circuit voltage of the battery & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}\cdot\text{A}^{-1}$\\
+    $D(t)$ & dynamic aging acceleration factor & - \\
+    $y(T,t)$ & static aging acceleration factor about temperature & - \\
+    $Q_m(t)$ & the aged capacity & $\text{A}\cdot\text{s}$ \\
+    $R_1$ & the polarization resistance & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}\cdot\text{A}^{-2}$ \\
+    $R_0$ & the internal resistance of the battery & $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-3}\cdot\text{A}^{-2}$ \\
+    $C_1$ & the polarization capacitance & $\text{kg}^{-1}\cdot\text{m}^{-2}\cdot\text{s}^4\cdot\text{A}^2$ \\ 
+    %$R^2$ & Coefficient of determination & - \\
+    %$RMSE$ & Root mean squared error & Same as output \\
+    $t$ & Time & $\text{s}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\FloatBarrier
+
+%%%%%%%%%%%%%%第一种写法%%%%%%
+\section{Model Establishment}
+
+\subsection{System of differential equations for SOC with respect to time}
+The battery charge depletes with time during operation. Grounded in the fundamental law of conservation of charge, we establish the relationship between charge dynamics and time, and define the State of Charge (SOC) as follows:
+\begin{equation}
+    S = \dfrac{Q_{res}}{Q_0}=\dfrac{Q_0-Q_{used}}{Q_0}.
+\end{equation}
+where
+\begin{itemize}
+    \item $S$ is state of charge(SOC); 
+    \item $Q_{res}$ is the residual charge of the battery;
+    \item $Q_0$ is the total battery capacity;
+    \item $Q_{used}$ is the consumed electric charge.
+\end{itemize}
+
+Based on the temporal variation, the relationship between the charge change and time is formulated, where the reduced charge can be represented by the SOC,and we then take the derivative with respect to time.
+\begin{align}
+    \Delta Q&=(1-S)Q_0, \\
+    Idt&=-Q_0dS.
+\end{align}
+
+After simplification, we obtain the relation between SOC change rate and main circuit current Formula\eqref{the relation between SOC change rate and main circuit current}:
+\begin{equation}
+    \dfrac{dS}{dt}=-\dfrac{I}{Q_0}. \label{the relation between SOC change rate and main circuit current}
+\end{equation}
+
+The value of current $I$ can be obtained according to the fundamental relationship between current $I$, voltage $U$, and total electric power $P_{total}$. Meanwhile, the main voltage is determined by applying Ohm's Law for a closed circuit:
+
+\begin{align}
+% 大括号+多行公式，嵌入 align* 中
+\left\{
+\begin{aligned}
+I &= \dfrac{P_{\text{total}}}{U}, \\
+U&=V_{ocv}-Ir.
+\end{aligned}
+\right.
+\end{align}
+where
+\begin{itemize}
+    \item $I$ is the main current;
+    \item $U$ is the main voltage;
+    \item $P_{total}$ is the total power consumed;
+    \item $V_{ocv}$ is the open-circuit voltage of the battery;
+    \item $r$ is the open-circuit voltage of the battery.
+\end{itemize}
+
+\subsection{Power Model: Thevenin Battery and Tremblay Model}
+
+Based on the first-order Thevenin theorem\cite{liaw2004modeling}
+, a real battery can be modeled as the superposition of an ideal voltage source, an internal resistance, and a first-order RC polarization circuit. It accurately reflects the polarization characteristics of power batteries and is suitable for the study of charging and discharging processes.
+
+As the battery consumes active chemical materials to generate electrical energy, its electrochemical properties gradually evolve, causing the electrode potential to deviate from equilibrium. Simultaneously, this process induces concentration gradients within the lithium-ion battery. Consequently, these combined factors give rise to polarization voltage. Existing literature has already established dynamic equations describing this polarization voltage:
+\begin{align}
+    \dfrac{dU_p(t)}{dt} &= -\dfrac{U_p(t)}{R_1 C_1} + \dfrac{I(t)}{C_1} \label{eq:up_dynamic}, \\
+    U_{m}(t) &= V_{ocv}(S(t)) - I(t) R_0 - U_{p}(t). \label{eq:um_terminal}
+\end{align}
+\begin{itemize}
+    \item $R_0$ is the internal resistance of the battery;
+    \item $U_p$ is the polarization voltage;
+    \item $R_1$ is the polarization resistance; 
+    \item $C_1$ is the polarization capacitance; 
+    \item $U_m$ is the terminal voltage modified by Thevenin's theorem.
+\end{itemize}
+
+Next, we calculate the open-circuit voltage $V_{ocv}$, whose magnitude is influenced by the State of Charge (SOC). The relationship between them is extremely complex. Currently, parameter fitting and the Kalman filter estimation method are widely adopted in scientific research to model this relationship. In our study, we use the Tremblay model\cite{tremblay2009experimental}
+used in MATLAB/Simulink. It describes the nonlinear relationship where $V_{ocv}$ decreases as the SOC declines, providing a theoretical basis for the faster voltage drop of batteries at low SOC:
+\begin{equation}
+    V_{ocv} = E_0-\dfrac{k}{S}+Ae^{-B(1-S)Q_0}.
+\end{equation}
+\begin{itemize}
+    \item $E_0=3.85V$, constant voltage;
+    \item $K=0.02,A=0.25,B=3.0Ah^{-1}$, all are the relevant constants obtained from measurements.
+\end{itemize}
+
+\subsection{Establishment of the total power model}
+Establishing a total power model from the perspective of mechanism analysis is relatively complex. Therefore, we investigate the relationship between the performance of each component and its power consumption, and finally sum up the respective powers to obtain the total power consumption.\cite{carroll2010analysis}
+For performance quantification, we adopt the method of parameter setting and fitting, which is detailed as follows:
+\begin{equation}
+    P_{\text{total}} = P_{\text{base}} + P_{\text{screen}} + P_{\text{cpu}} + P_{\text{network}} + P_{\text{gps}}.
+\end{equation}
+
+We adopt linear fitting for the factors of brightness, CPU utilization and network connectivity, and perform quadratic fitting for GPS given its relatively high power consumption.
+\begin{align}
+P_{\text{screen}} &= (C_1 + C_2 L) \cdot S_1 ,\\
+P_{\text{cpu}} &= C_3 \times \text{CPU}\% \times \left(\sum_{i=1}^n f_i\right), \\
+P_{\text{net}} &= C_4 \times \text{throughput} + C_5 e^{\text{wifi}}, \\
+P_{\text{gps}} &= C_6 \times \text{GPS} + C_7 \times \text{GPS}^2.
+\end{align}
+\begin{itemize}
+    \item $C_1,C_2,...,C_7^{(1)},C_7^{(1)}$ are the power consumption coefficients;
+    \item $\text{CPU}\%$ is the CPU utilization and $f_i$ is the CPU frequency for each core;
+    \item $\text{wifi}$ is the strength of WiFi;
+    \item $\text{GPS}$ is the relative strength of different GPS modes.
+\end{itemize}
+
+$C_1$ denotes the static baseline power consumption of the display panel, while $C_2$ serves as the brightness coefficient. We model the relationship between $P_{screen}$ and brightness $L$ as linear. This is based on the general consensus that power dissipation does not increase drastically with a uniform increase in brightness levels.
+
+CPU power consumption is correlated with both utilization and frequency. Notably, frequency is considered effective only during active operation. Utilization is defined as the statistical average of active clock cycles over the testing duration. Given that the mobile CPUs in our reference dataset feature multi-core architectures, we calculate the total effective frequency by summing the frequencies of all individual cores.It is posited that CPU power consumption varies consistently with the combined effect of these two factors: specifically, the sufficiency of component utilization and the full activation of pipeline parallelism.Therefore, $P_{cpu} \propto \text{Utilization} \times \text{Frequency}$.
+
+For network power consumption, we model the total power as the sum of two components: data throughput processing and signal transmission. The power required for data throughput increases linearly with data volume. In contrast, the transmission and reception of electromagnetic signals are high-energy activities, which we model using an exponential function.
+
+The GPS model adopts a quadratic fitting $P_{gps} \propto GPS^2$, to show that its instantaneous power consumption can be remarkably high.
+
+\subsection{Aging Power Model and Temperature Effects}
+The physical characteristic of battery aging is that the aging coefficient continuously increases with cumulative consumption, leading to a gradual decline in battery capacity. Specifically, the degree of aging intensifies at lower State of Charge (SOC) levels. Furthermore, in scenarios involving high SOC or low temperatures, side reactions within the battery are accelerated, thereby increasing the aging coefficient—a process that can be quantified using the Arrhenius law.\cite{schimpe2014comprehensive}
+This model introduces a Risk Index to quantify the extent of aging and incorporates an SOC penalty term to describe the detrimental effects of both high and low SOC on the battery's State of Health (SOH):\cite{cordoba2015control}
+
+\begin{align}
+% 核心容量公式
+Q_m &= Q_0 \cdot F(t) \cdot y(T),\\
+% 衰减因子的微分方程
+\frac{dF}{dt} &= -\theta_{1} D, \\
+% 加速系数A的表达式
+D &= e^{0.035(T-25)} \cdot \left(1 + v_1|I| + v_2 \cdot \mathbb{I}(S)\right),\\
+% SOC指示函数（分段函数）
+\mathbb{I}(S) &=
+\begin{cases}
+1, & S < 10\%, \\
+0, & \text{o.w}.
+\end{cases} \\
+% 温度修正因子
+y(T) &= e^{-\theta_2 T}.
+\end{align}
+\begin{itemize}
+    \item $Q_m$ is the aged capacity;
+    \item $\theta_1,\theta_2$ are the aging rate parameters;
+    \item $y(T)$ is thermal derating factor;
+    \item $\mathbb{I}(S)$ is an indicator function;
+    \item $v_1,v_2$ is the sensitivity coefficients.
+\end{itemize}
+
+The construction of the Risk Index $D$ (Eq. 16) synthesizes three critical physical stressors based on the Arrhenius Law:
+\begin{enumerate}
+    \item Thermal Stress: The term $e^{0.035(T-25)}$ represents the acceleration of side reactions (e.g., SEI film growth) due to temperature deviations from the standard $25^\circ C$.
+    
+    \item Kinetic Stress: The term $v_1|I|$ accounts for the mechanical stress and lithium plating caused by high-rate charging/discharging current.
+    
+    \item Potential Stress: The penalty term $\mathbb{I}(S)$ introduces a non-linear step function (Eq. 17), penalizing operations in extreme SOC regions ($<10\%$) where chemical instability and electrode lattice stress are maximized.
+\end{enumerate}
+\section{Problem Solutions}
+\subsection{Workflow of the Solution}
+%% 一个流程图
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=16cm]{figures/workflow__of_method.pdf}  % 引入图片源
+\caption{Workflow Of Method} \label{workflow}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+\subsection{Numerical solution of the differential equation}
+This model involves a large number of nonlinear equations, for which an analytical solution cannot be derived. We adopt the 4th-5th order Runge-Kutta method to implement numerical integration by simulation, thus enabling the calculation of the SOC value at each time instant.
+
+In this method, the integral function that can be sufficiently approximated within a small step size is solved via a four-step piecewise approximation approach. This yields a sufficiently high numerical accuracy for the solution, which can thus serve as a viable alternative to analytical solution-based calculations.
+
+\subsection{Nonlinear least squares method}
+By calculating and predicting the SOC value at each time instant and comparing it with the actual SOC value, we minimize the mean square error as follows:
+\begin{equation}
+    \min MSE = \frac{1}{n} \sum_{i=1}^{n} \left[ \hat{SOC}(t_i) - SOC(t_i) \right]^2,\text{for each experiment}
+\end{equation}
+
+The Levenberg-Marquardt algorithm enables the relatively fast identification of a near-optimal solution within a finite time frame. As an iterative numerical method, it combines the gradient descent method with the Gauss-Newton method and is capable of solving nonlinear parameter fitting problems.
+
+
+
+
+
+\section{Results: Time-to-Empty Prediction}
+\subsection{Overview of comparison between reality and prediction}
+% 预测多折线图
+\begin{figure}[h]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/pic1.png}  % 引入图片源
+\caption{SOC Prediction Curves with Multiple Conditions} \label{预测数据曲线图（多线条）}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+By simulating the model under various initial conditions provided by the dataset, we generated fitted curves for our predictive model. By extending these curves until they intersect with the x-axis, the Time-to-Empty (TTE) can be clearly identified from the Figure \ref{预测数据曲线图（多线条）}.
+
+
+It can be observed that all curves effectively simulate the downward trend of battery charge, and simultaneously present the distribution characteristics of Time-to-Empty (TTE) under different initial conditions. The above distribution of time data is a predictive result derived from the existing measured data combined with the mathematically and physically model we fitted. On this basis, we select the most representative experimental cases for further in-depth analysis.
+
+The calculated $RMSE_{SOC}$ values for these two representative scenarios are 2.26\% and 5.38\%, with correlation coefficients $R^2$ of 0.95 and 0.93, demonstrating a high goodness of fit. The hardware parameter settings for both the fitting phase and the representative scenarios are illustrated in the Figure \ref{典型情况比曲线}.
+
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=16cm]{new_figures/典型情况对比.pdf}  % 引入图片源
+\caption{Comparison of Typical Cases} \label{典型情况比曲线}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+% 双图：做很多线的对比
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+Certainly, the current approximate prediction methods based on parameter design and mathematical equations exhibit certain discrepancies from actual conditions. We have found that the real SOC decline curve often presents a step-function pattern, an electrical behavior that cannot be simulated by differential equations. Such discrepancies can be attributed to the following two factors:
+\begin{itemize}
+    \item The embedded operating system built into mobile phones may implement predictive control over battery performance, heat dissipation and CPU operation, leading to the phenomena of delayed discharge and delayed charging in energy storage devices. These phenomena are determined by the mobile phone's components and intelligent software algorithms.
+    \item This experiment only established a simple electrical model for lithium batteries and failed to consider the complex collaborative working mechanisms among the electronic components of mobile devices. As a result, the fitting method using differential equations cannot fully simulate the jump states of the battery.
+\end{itemize}
+
+Although continuous-time equations face challenges in simulating step-like curves, they provide relatively precise estimates of the State of Charge (SOC). Furthermore, the model yields highly accurate predictions for Time-to-Empty (TTE).
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=10cm]{new_figures/soc_correlation_plot_10pct.png}  % 引入图片源
+\caption{SOC Correlation between prediction and real data} \label{soc_correlation_plot_10pct.png}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+% 可以看到，每组实验预测的TTE与真实的TTE的形成的坐标对的在直线$y=x$附近，另外还有：%
+It can be observed that the coordinate pairs formed by the predicted and actual TTE values for each experimental group cluster closely around the line $y=x$. Additionally,we have:
+\begin{equation}
+    RMSE_{all} = 1.327(h) ,R^2=0.988.
+\end{equation}
+
+\subsection{Case Study: different working conditions in real life}
+
+We selected several common operational states of mobile phones—standby, call-making, video-watching, game-only and navigation and combined these states to simulate the busy daily routines of students and office.
+
+The 'Work' scenario simulates a typical daily routine comprising daytime commuting, phone-free working hours, post-work leisure gaming, and essential communication. Conversely, the 'Home' scenario describes an operation pattern dominated by gaming and video streaming. 
+
+Additionally, we established specific states for 'Commute','WeChat Call,' and 'Gaming Only.' The 'Commute' state depicts a user on public transport (subway or bus) engaging in activities such as browsing TikTok, gaming, and utilizing GPS navigation, interspersed with idle standby periods. The 'WeChat Call' scenario simulates the workflow of mobile professionals ('office workers') who rely on their devices to communicate with clients and manage tasks. Finally, the 'Gaming Only' state is designed specifically to investigate battery performance under conditions of rapid power depletion.
+
+The mobile operation profiles for these common daily scenarios are visualized as a Gantt chart in the Figure \ref{常见情景分布}:
+
+% 甘特图：
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=15cm]{figures/常见情景分布.pdf}  % 引入图片源
+\caption{Distribution of Common Scenarios} \label{常见情景分布}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+In Table \ref{tab:power_consumption_ratio}, the ratio is expressed as a percentage, representing the utilization rate relative to the device's maximum capacity in this specific scenario. It is important to note that the GPS parameter is set to 1 solely for the 'Navigation' scenario, while it remains 0 for all other cases. This binary configuration implies that the model accounts only for the activation state (On/Off) of the GPS, highlighting its nature as a high-power consumption feature.
+
+% 对比参数设置的表格：
+\begin{table}[H]
+\centering
+\caption{Setting of components in different activity scenarios}
+\begin{tabular}{ccccc}
+\toprule
+\textbf{Activity} & \textbf{Screen} & \textbf{CPU} & \textbf{Network} & \textbf{GPS} \\
+\midrule
+Standby & 0.05 & 0.05 & 0.08 & 0 \\
+Call & 0.33 & 0.23 & 0.35 & 0 \\
+Video & 0.70 & 0.60 & 0.48 & 0 \\
+Game & 0.88 & 0.88 & 0.43 & 0 \\
+Navigation & 0.80 & 0.70 & 0.80 & 1 \\
+\bottomrule
+\end{tabular}
+\label{tab:power_consumption_ratio}
+\end{table}
+
+
+
+Next, we calculated the Time-to-Empty(TTE) for these processes and measured the power consumption proportion of each operating component, with the results presented in Figure \ref{各种情况下SOC下降} and \ref{各种情况的比例消耗}:
+
+% 左 SOC下降图,右功耗对比图
+\begin{figure}[H]  % 图片
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/soc_all_patterns.png}  % 引入图片源
+\caption{SOC Degradation under Various Usage Conditions} \label{各种情况下SOC下降}  % 标题与标签
+\end{figure}  % 图片结束
+
+\begin{figure}[H]  % 图片
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/power_comparison.png}  % 引入图片源
+\caption{Proportional Power Consumption in Various Scenarios} \label{各种情况的比例消耗}  % 标题与标签
+\end{figure}  % 图片结束
+
+It is observed that the SOC decline is relatively linear and straightforward during continuous gaming sessions, albeit at a slow rate. In contrast, other scenarios exhibit phased variations depending on the intensity of device usage. Regarding power distribution, the network's impact on battery consumption is unexpectedly minimal, whereas CPU utilization emerges as the primary driver of power dissipation. Furthermore, while screen processes are generally perceived as computationally simple, they nonetheless account for a significant portion of the total energy consumption.
+
+
+
+
+\subsection{Analysis of aging effects and battery persistency}
+From the collected data, we identified scenarios under identical system conditions where the power contribution ratio of each component was maximized. We then investigated the State of Health (SOH) of the battery in these specific instances.
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/aging_dynamics_summary_all_8_curves.png}  % 引入图片源
+\caption{Battery Aging} \label{老化} % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+Observations indicate that in the group with a higher GPS usage ratio, the value of $Q_m/Q_0$ remains consistently high, suggesting that the actual capacity closely approximates the rated capacity. In fact, although the instantaneous power consumption of the GPS module is high, it is infrequently activated; thus, its cumulative impact on the system is minimal.
+
+The fluctuation pattern of battery health in the Network group is distinct: it exerts a significant influence on the battery status initially, but this impact subsequently becomes surprisingly negligible.
+
+Conversely, long-term utilization of both the CPU and the Screen exacerbates battery aging. This is particularly evident with the CPU. As the component with the most continuous operation, we observed that extended device uptime leads to a rapid decline in the battery's State of Health (SOH) due to CPU load. However, the Screen does not typically exhibit this trend. Considering that smartphones are equipped with automatic screen-off (auto-lock) features, the screen does not cause a continuous decline in battery health despite the device being in use for long periods.
+
+Furthermore, high-temperature conditions exacerbate the various negative impacts on battery health, leading to a significant decline in $Q_m/Q_0$\cite{ma2018temperature}
+. Therefore, users are advised to avoid prolonged utilization of the CPU and screen, as well as the frequent operation of GPS or network-intensive applications. These activities not only accelerate battery aging but also induce device overheating, which further exacerbates the aging process.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+%  温度过低导致电池消耗过快的原因是否与过热相同呢？我们对比了三种温度（25度，45度与-25度）下我们设计的情况下SOC的下降曲线
+
+Does the accelerated battery depletion observed at low temperatures share the same underlying mechanism as that caused by overheating? To investigate this, we compared the SOC depletion trajectories under three distinct thermal conditions ($25^\circ\text{C}$, $45^\circ\text{C}$, and $-25^\circ\text{C}$) within our simulated scenarios.
+
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=13cm]{new_figures/soc_all_patterns_combined.png}  % 引入图片源
+\caption{SOC patterns in different temperature} \label{soc_all_patterns_combined} % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+These findings are significant. While high temperatures do not notably alter short-term SOC depletion trends, low temperatures exert a pronounced influence. In a controlled comparative experiment, we observed that the dynamic aging factor remained nearly identical between the low-temperature and ambient-temperature groups, with their respective degradation curves overlapping.
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=16cm]{new_figures/温度变化示意图.png}  % 引入图片源
+\caption{Complex Effects of Temperature on the Battery} \label{温度变化示意图} % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+This evidence proves that the accelerated depletion at low temperatures is not driven by intensified electrochemical aging. Instead, we attribute this phenomenon to the thermal interaction between the environment and device components. Specifically, the CPU exhibits the highest sensitivity to thermal conditions. In low-temperature environments, the enhanced heat dissipation efficiency maintains lower CPU temperatures. Consequently, the operating system's thermal governor detects this 'thermal headroom' and aggressively scales up CPU utilization (or frequency), ultimately resulting in increased power consumption.
+
+
+\section{Sensitivity Analysis}  % 一级标题
+To evaluate the stability and reliability of the model across diverse scenarios, we conducted a sensitivity analysis. By applying controlled perturbations to key parameters within a specific range, we observed the resulting variations in the SOC curves and the predicted Time-to-Empty (TTE). This process allows us to quantify the robustness of the model and identify the parameters that exert the most significant influence on battery endurance.
+
+To calculate the Time-to-Empty (TTE), we performed single-variable perturbations on the parameter factors within a range of -20\% to 20\%. We selected two distinct scenarios—'Commute' and 'WeChat Biz'—to represent low-intensity and high-intensity usage respectively, thereby examining the model's sensitivity. The results are illustrated in the figure.
+
+
+%% 相关性 C1 - C7的图 与龙卷风图
+\begin{figure}[H]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=13cm]{new_figures/sensitivity_power_coefficients_combined.png}  % 引入图片源
+\caption{Sensitivity Analysis of Parameters} \label{参数的敏感性分析} % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+It is evident that as the proportions of $C_1$, $C_2$, and $C_3$ vary, the TTE values exhibit relatively pronounced fluctuations, signifying that screen settings and CPU operation are the primary factors influencing power consumption. Conversely, the TTE remains relatively stable during the variation of $C_4$ through $C_7$, which indirectly confirms that components such as GPS and Network modules have a minimal impact on overall battery depletion.
+% 将温度与模型的其他主要参数对比，我们会发现，在正常温度范围内，修改温度并不能明显使TTE发生明显变化。可见温度只有突破上下的阈值，也就是在过热或极端低温情况下，才会明显影响电量消耗。这是一种骤变，而并不是线性影响。
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/sensitivity_T_C1_C3_combined.png}  % 引入图片源
+\caption{Sensitivity about Temperature in different cases} \label{Temperature Sensitivity}  % 标题与标签，label是为了应用
+\end{figure}
+
+% 除去参数之外，我们还要考察温度的小幅度对于系统是否具有影响。对温度进行敏感性分析，同时与CPU与屏幕做对比：
+Beyond the model parameters, we investigated the system's sensitivity to small-scale temperature variations. A comparative sensitivity analysis was performed to evaluate the impact of temperature relative to the CPU and screen components.
+
+As Figure \ref{Temperature Sensitivity} shown, comparing temperature with other primary model parameters, we observe that within the normal operating range, variations in temperature do not induce significant fluctuations in the Time-to-Empty (TTE). It is evident that temperature significantly impacts power consumption only when it breaches specific upper or lower thresholds—namely, under conditions of overheating or extreme cold. This phenomenon characterizes an abrupt, non-linear transition rather than a linear dependency.
+ 
+
+\section{Model Evaluation}  % 一级标题
+\subsection{Strengths}
+\textbf{Comprehensive modeling covering the full charge-discharge cycle.} Our model organically integrates three core modules: power calculation, battery aging, and equivalent polarization circuits. It characterizes the dynamic evolution of the State of Charge (SOC) over time under various operating conditions. This enables an integrated analysis of real-time hardware power consumption and battery performance degradation, overcoming the limitations of traditional models that focus only on single stages.
+
+\textbf{Multi-factor analysis reflecting realistic aging mechanisms.} The model incorporates key features such as screen brightness and status, CPU utilization and frequency, network throughput, WiFi signal strength, and GPS activity. By introducing environmental factors—including temperature, charge-discharge current, and SOC extremes—the model accurately reflects the complex aging pathways of lithium-ion batteries in real-world environments.
+
+\textbf{Clear physical significance and empirical verifiability.} The model's outputs can be directly compared and validated against experimental SOC discharge curves. This ensures that the model maintains both rigorous academic standards and practical engineering feasibility.
+\subsection{Weaknesses}  
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/pic1_real.png}  % 引入图片源
+\caption{Actual SOC Discharge Curves} \label{real curve}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+\textbf{High computational cost and significant burden in parameter estimation.} The model involves a substantial number of parameters across multiple sub-modules, including power dissipation and battery aging. Accurate calibration of these parameters necessitates extensive controlled experiments and long-term data acquisition of current, temperature, and SOC across a wide range of operating conditions, placing a heavy load on data processing.
+
+%% 加个真实多曲线图
+\textbf{Discrepancy between continuous-time assumptions and discrete-event reality.} While our model is built upon a continuous-time framework, the operational states of smartphone hardware—such as screen status, GPS toggling, and network mode switching—are inherently discrete events. 
+
+\textbf{In practice, discrete sensor data must be interpolated or smoothed for integration into the model.} This pre-processing step inevitably introduces additional errors that a continuous-time model cannot inherently capture or eliminate.
+\subsection{Further Discussion}
+Impact of Charging Patterns on Battery Aging: The current aging model focuses exclusively on the effects of operational usage and ambient temperature. Future iterations could extend the original model to incorporate scenarios involving concurrent charging and usage to investigate whether such practices induce additional battery aging.
+
+Software-Level Dynamic Power Intervention: Background process scheduling and power-saving algorithms within the operating system exert dynamic control over hardware power consumption. These factors likely account for the discrete fluctuations observed in actual power data.
+
+\newpage
+\section{Conclusion and Suggestion}
+
+\begin{center}
+        \Large \textbf{Executive Summary} % \Large设置字号，\textbf加粗
+    \end{center}
+    
+Smartphones are indispensable in modern life, but uncertainty in battery depletion remains a major source of user anxiety. Through modeling, experiments, and data analysis, we have revealed battery depletion trends. The specific results are summarized below.
+
+\subsection*{Key Findings}
+We established a continuous-time differential equation model and derived the following conclusions through case studies, conditional analysis, and sensitivity analysis:
+\begin{itemize}
+    \item Primary Factors: In most scenarios, CPU activity and screen brightness drive rapid battery depletion. Network and GPS modules peak during initialization, positioning, and connection, with long-term operation consuming little power. During high-demand activities like gaming or video playback, the CPU processes application, network, and GPS data while rendering graphics, increasing energy use.
+    \item Aging Analysis: Temperature critically affects battery aging. CPU heat significantly impacts battery health; prolonged high loads worsen State of Health (SOH), increasing power consumption. Screens have similar but milder effects. Battery health deteriorates more during video calls and gaming. State of Charge (SOC) influences degradation; depletion accelerates below 40\% SOC.
+\end{itemize}
+
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/picture1.jpg}  % 引入图片源
+\caption{Actual SOC Discharge Curves} \label{real curve}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+\subsection*{Recommendations for Smartphone Users}
+To optimize device longevity and performance, several practices are recommended. First, manage CPU load by pausing intensive activities hourly to reduce aging and allow thermal recovery. Second, enable auto-lock to minimize continuous screen activation for energy conservation. Third, use network and GPS efficiently through batch transmissions and positioning, avoiding frequent toggling to reduce aging and power loss. Fourth, recharge promptly at low battery, as low SOC accelerates aging due to higher internal resistance. Finally, limit device use in extreme temperatures and prioritize room-temperature operation, as low temperatures damage battery chemistry and high temperatures impair CPU thermal stability.
+
+
+\subsection*{Guidance for Operating System (OS) Development}
+\begin{itemize}
+    
+    \item \textbf{Holistic Power Allocation}: The OS must balance CPU, screen, network, and GPS power. We propose a "Virtual Power Management Module" to control power behavior via software, enabling energy saving without low-level battery access.
+
+    \item \textbf{Balancing Utilization and Idle Time}: The OS should balance CPU utilization and idle time. Mobile systems prioritize energy efficiency. Reduce CPU use while maintaining functionality and add idle intervals for thermal dissipation.
+
+    \item \textbf{Real-Time Thermal Throttling}: The OS should implement real-time thermal sensing. When temperature exceeds thresholds, throttle CPU, dim screen, and restrict network/GPS. Issue alerts to preserve device safety and longevity.
+
+\end{itemize}
+
+\begin{figure}[h!]  % 图片
+\small
+\centering  % 居中
+\includegraphics[width=14cm]{new_figures/picture2.jpg}  % 引入图片源
+\caption{Actual SOC Discharge Curves} \label{real curve}  % 标题与标签，label是为了应用
+\end{figure}  % 图片结束
+
+\printbibliography  % 打印引用文献列表
+
+\newpage
+\begin{center}
+    \section*{AI Usage Report}
+\end{center}
+
+Anthropic Claude (Sonnet 4.5)
+
+Query1: How are temperature and reaction rate related in the Arrhenius equation?
+
+Output: In the Arrhenius equation, temperature and reaction rate have an exponential relationship. The equation is: $k = A e^{-\frac{E_a}{RT}}$ where k is the rate constant, A is the pre-exponential factor, Ea is the activation energy, $R$ is the gas constant, and T is absolute temperature.
+The key insight is that as temperature increases, the rate constant k increases exponentially. This happens because temperature appears in the denominator of the exponent ($-\frac{E_a}{RT}$), so higher temperatures make the exponent less negative, which increases the value of $e^{-\frac{E_a}{RT}}$.
+Physically, this makes sense: higher temperatures give molecules more kinetic energy, so a greater fraction of collisions have enough energy to overcome the activation energy barrier. Even modest temperature increases can significantly speed up reactions. For many reactions, a 10°C increase in temperature roughly doubles the reaction rate.
+You can also rearrange the Arrhenius equation into logarithmic form to get a linear relationship: $\ln(k) = \ln(A) - \frac{E_a}{RT}$
+This form shows that plotting $\ln(k)$ versus $\frac{1}{T}$ gives a straight line with slope $-\frac{E_a}{R}$, which is useful for experimentally determining activation energies.
+
+Query2: What is Thevenin’s theorem?
+
+Output:Thévenin's theorem is a fundamental principle in electrical circuit analysis that simplifies complex circuits. The theorem states that any linear electrical network containing voltage sources, current sources, and resistances can be replaced by an equivalent circuit consisting of just two components: a single voltage source (called the Thévenin voltage, $V_{TH}$, which is the open-circuit voltage across the terminals of interest) and a single series resistor (called the Thévenin resistance, $R_{TH}$, which is the equivalent resistance seen from those terminals when all independent sources are deactivated). This makes circuit analysis much easier, especially when you want to understand how a circuit behaves from the perspective of a particular load.
+
+To find the Thévenin equivalent circuit, you first remove the load and calculate the voltage across the open terminals to obtain $V_{TH}$. Then, you deactivate all independent sources (replacing voltage sources with short circuits and current sources with open circuits) and calculate the resistance looking back into the circuit from the terminals to obtain $R_{TH}$. This theorem is extremely useful because if you're testing different loads on a circuit, you only need to find the Thévenin equivalent once. After that, you can easily calculate the current and voltage for any load resistance without having to re-analyze the entire original circuit each time.
+
+The theorem was developed by French engineer Léon Charles Thévenin in 1883 and has a closely related counterpart called Norton's theorem, which uses a current source and parallel resistor to represent the equivalent circuit instead.
+
+%%%%%%%%%%%%%%%%%%%%%%% 正文结束 %%%%%%%%%%%%%%%%%%%%%%%
+% \newpage
+% \begin{appendices}  % 附录
+
+% \end{appendices}  % 附录结束
+
+
+\end{document}  % 文档结束
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

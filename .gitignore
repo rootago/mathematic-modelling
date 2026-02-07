@@ -1,0 +1,35 @@
+@"
+# 数据文件
+*.mat
+*.csv
+*.xlsx
+*.xls
+*.dat
+*.txt
+*.Rda
+Data/
+data/
+dataset/
+
+# PDF 文档
+*.pdf
+
+# 压缩包
+*.rar
+*.zip
+*.7z
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.pyc
+
+# Matlab
+*.asv
+
+# 其他
+.DS_Store
+Thumbs.db
+"@ | Out-File -FilePath .gitignore -Encoding utf8
