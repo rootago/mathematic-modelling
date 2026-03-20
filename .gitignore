@@ -23,6 +23,7 @@ dataset/
 # Python
 __pycache__/
 *.py[cod]
+.venv
 .ipynb_checkpoints/
 *.pyc
 
@@ -33,3 +34,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 "@ | Out-File -FilePath .gitignore -Encoding utf8
+*.mp4
